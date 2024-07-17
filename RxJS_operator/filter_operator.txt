@@ -1,0 +1,29 @@
+        RxJS Operator: filter  
+    --------------------------
+
+    Filters to the items that match criteria specified in a provided function
+
+    filter(item => item === 'Apple')
+
+    Similar to array filter method
+
+    filter is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When a source item is emitted
+        - Item is evaluated as specified by the provided function
+        - If the evaluation returns true, item is emitted to the output stream
+
+of('A', 'B', 'A')
+    .pipe(
+        filter(item => item === 'A'),
+    ).subscribe(console.log);
+
+    Marble Diagram: filter
+-------------------------------
+
+---- A ---- B --- A ----- >  input Observable
+filter(item => item === 'A')
+---- A ---------- A ---- >   Result Observable
+
