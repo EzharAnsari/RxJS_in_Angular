@@ -1,0 +1,43 @@
+********** RxJS Creation Funtion: combineLatest ***********
+
+    Creates an Observable whose values are defined:
+        - Using the *latest* values from each input Observable
+
+    combineLatest([a$, b$, c$])
+        - we combine 3 streams
+    
+    Static creation function, not a pipeable operator
+
+
+
+    Marble Diagram:
+-------------------------
+
+-----%45--$50----------------------------------------|->  audience stream
+
+-----------------$55--------------------$80----------|->  online stream
+
+--$25-------------------------$75--------------------|->  phone stream
+
+combineLatest([audience$, online$, phone$])
+
+                [$50,         [$50,      [$50,
+-----------------$55,----------$55,-------$80,-------|->  output stream
+                 $25]          $75]       $75]
+
+
+    combineLatest is a combination function
+        - Takes in a set of streams, subscribes
+        - Creates an output stream
+    
+    When an item is emitted form any stream
+        - If all streams have emitted at least once
+        - Emits a value to the output stream
+
+    Completes when all input streams complete
+
+    Emitted value combines the latest emitted value from each input stream into an array
+
+    Use
+        - To re-evalute state when an action occurs
+
