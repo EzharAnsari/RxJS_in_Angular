@@ -1,0 +1,14 @@
+************* Change Detection Strategies *****************
+
+Default:
+    - Uses the default checkAlways strategy
+    - Every component is checked when:
+        - Any change detected
+
+OnPush:
+    - Improves performance by minimizing change detection cycles
+    - Component is only checked when:
+        - @Input properties change
+        - Event emits
+        - A bound Observable emits
+
