@@ -1,0 +1,126 @@
+********************** Handling Errors **********************
+
+we can handle error in 2 ways
+1. Catch and Relplace
+2. Catch and Rethrow
+
+
+***************** RxJS Operator: catchError *****************
+
+Catches any error that occur on an Observable
+
+catchError(this.handleError);
+
+Used for catching errors and
+    - Rethrowing an error
+    - Or replace the errored Observable to continue after an error occurs
+
+catchError is an error handling operator
+    - Takes in an input stream, subscribes
+    - Create an output stream
+
+When a source item is emitted
+    - Item is emitted to the output stream
+
+If an error occurs
+    - Catches the error
+    - Unsubscribe from the input stream
+    - Return a replacement Observable
+    - Optionally Rethrow the error
+
+    Marble Diagram
+----------------------
+
+------(Error_occured)------------------------------->  Input stream
+
+------(Replace with new Stream)--------------------->   catchError(err => ...)  // replace the error data with new data
+
+------(Replace with new Stream)--------------------->  Output stream
+
+
+************* Replacing An Errored Observable *****************
+
+    - An Observable created from hard-coded or local data
+    - An Observable that emits an empty value or empty array
+    - The EMPTY RxJS constant
+    - It will not called the error event on observer
+
+Example:
+
+return this.http.get<Product[]>(this.productUrl)
+    .pipe(
+        catchError(err => {
+            console.log(err);
+            return of([
+                { id: 1, productName: 'cart'},
+                { id: 2, productName: 'hammer'}
+            ]);
+        });
+    )
+
+
+********** RxJS Creation Funtion: throwError *************
+
+throwError is a creation function
+
+creates an Observable that emits no items
+    - Observable<never>
+
+Immmediatly emits an error notification
+
+Used for
+    - Propagating an error
+
+
+************* Catch and Rethrow *****************
+
+return this.http.get<Product[]>(this.productUrl)
+    .pipe(
+        catchError(err => {
+            console.log(err);
+            return throwError(err);
+        });
+    )
+
+
+******** Common Pattern with Error Handling ***********
+Example:
+
+getProducts(): Observable<Product[]> {
+    return this.http.get<Product[]>(this.productUrl)
+        .pipe(
+            catchError(this.handleError);
+        )
+}
+
+private handleError(error) {
+    // ....
+    return throwError(errorMessage);
+}
+
+./Product-list-component
+
+products$: Observable<Product[]>;
+
+constructor(private productService: ProductService) {}
+
+ngOnInit() {
+    this.products$ = this.productService.getProducts()
+        .pipe(
+            catchError(err => {
+                this.errorMessage = err;
+                return EMPTY
+            })
+        );
+}
+
+*********** RxJS Constant: EMPTY **************
+
+Creates an Observable that emits no items
+
+And Immmediatly emits a complete notification
+
+return EMPTY;
+
+Used for
+    - Returning an empty Observable
