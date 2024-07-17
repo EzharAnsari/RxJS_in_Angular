@@ -1,0 +1,47 @@
+************ Unicast vs. Multicast **************
+
+    - Observable is Unicast.
+    - Subject is multicast.
+
+*************** Subject *******************
+
+private categorySelectedSubject = new Subject<number>();                      // Observable
+categorySelectedAction$ = this.categorySelectedSubject.asObservable();        // observer
+
+onSelected(categoryId): void {
+    this.categorySelectedSubject.next(+categoryId);
+}
+
+products$ = combineLatest([
+    this.productService,products$,
+    this.categorySeletedAction$
+])
+    .pipe(
+        map(([products, categoryId]) =>
+            products.filter(product =>
+                categoryId ? product.categoryId === categoryId : true
+            )
+        )
+    );
+
+
+*************** BehaviorSubject *******************
+
+private categorySelectedSubject = new BehaviorSubject<number>(0);
+categorySelectedAction$ = this.categorySelectedSubject.asObservable();
+
+onSelected(categoryId): void {
+    this.categorySelectedSubject.next(+categoryId);
+}
+
+products$ = combineLatest([
+    this.productService,products$,
+    this.categorySeletedAction$
+])
+    .pipe(
+        map(([products, categoryId]) =>
+            products.filter(product =>
+                categoryId ? product.categoryId === categoryId : true
+            )
+        )
+    );
