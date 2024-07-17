@@ -1,0 +1,64 @@
+************** Syntax of Async Pipe ************
+
+                "product$ | async"
+
+    - subscribes to the Observable when component is initialized
+    - Returns each emitted value
+    - When a new item is emitted, component is marked to be checked for changes
+    - Unsubscribes when component is destroyed
+
+
+************** Common pattern with an Async Pipe ************
+before
+-----------------------------------------------------------
+./product-list-component
+
+products: Product[] = [];
+
+consotructor(private productService: ProductService) {}
+
+ngOnInit() {
+    this.productService.getProducts()
+        .subscribe(products => this.products = products);
+}
+
+after
+-----------------------------------------------------------------
+./product-list-component
+
+products$: Observable<Product[]>;
+
+consotructor(private productService: ProductService) {}
+
+ngOnInit() {
+    this.products$ = this.productService.getProducts();
+}
+
+
+before
+-----------------------------------------------------------
+./product-list-Template
+
+<div *ngIf="products">
+
+<table>
+    <tr *ngFor="let product of products>
+        <td> {{ product.productName }} </td>
+        <td> {{ product.productCode }} </td>
+    </tr>
+</table?
+
+
+After
+-----------------------------------------------------------
+./product-list-Template
+
+<div *ngIf="products$ | async as products">
+
+<table>
+    <tr *ngFor="let product of products>
+        <td> {{ product.productName }} </td>
+        <td> {{ product.productCode }} </td>
+    </tr>
+</table?
+
