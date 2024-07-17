@@ -1,0 +1,16 @@
+********* Processing Observable Streams ***********
+
+Apple Factory                                                 RxJS
+------------------------------------------------------------------------------------------------------------
+1. Start the stream                                        1. Subscribe
+ - Emits items                                               - Emits items
+
+2. Items pass Through a set of Operations                  2. Pipe through a set of operators
+ - filtering, labeling, cleaning
+
+3. As an observer                                          3. Observer
+ - Next item, process item                                   - next()
+ - Error occured, handle it                                  - error()
+ - Complete, You're done                                     - complete()
+
+4. Stop the stream                                         4. Unsubscribe

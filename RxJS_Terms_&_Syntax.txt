@@ -1,0 +1,131 @@
+/*
+                            Terms
+    Observable
+        - any stream of data
+    
+    Observer
+        - observes the stream
+        - Methods to process notifications from the stream: next(), error(), complete()
+
+    Subscriber
+        - An Observer that can unsubscribe
+    
+    Subscription
+        - Represents the execution of an Observable
+        - subscribe() returns a Subscription
+
+                            Creating an Observable
+
+    Constructor
+
+    Creation functions
+        - of, from, fromEvent, interval, ...
+        - Create an Observable from anything
+    
+    Returned from an Angular feature
+        - Froms: valueChanges
+        - Routing: paramMap
+        - HTTP: get
+
+                            Starting an Observable
+    Call subscribe!
+
+    Pass in an Observer
+        - next(), error(), complete()
+
+                            Stopping an Observable
+
+    Call complete() on the Observer
+
+    Use a creation funtion that completes
+        - of, from, ...
+    
+    Use an operator that completes
+        - take, ...
+    
+    Throw an error
+
+    Call unsubscribe() on the Subscription
+
+ */
+
+
+/* *********************** Observer *************************************
+    - Observes the stream and responds to its notifications
+    - each notification is a arrow function
+    - object + 3 methods
+*/
+const observer = {
+    next: apple => console.log(`Apple was emitted ${apple}`),
+    error: err => console.log(`Error occured: ${err}`),
+    complete: () => console.log(`No more apples, go home`)
+};
+
+/* *********************** Subscribe *************************************
+    - it is a Observer that can unsubscribe from an Observable
+
+    Subscribe {
+        next()
+        error()
+        complete()
+    }
+*/
+
+/* *********************** Stream *************************************
+    - MUST subscribe to start the Observable stream
+*/
+const appleStream = new Observable(appleObserver => {
+    appleObserver.next('Apple 1');
+    appleObserver.next('Apple 2');
+    appleObserver.complete();
+});
+
+// start the stream
+const sub = appleStream.subscribe(observer);
+//              or
+const other_sub = appleStream.subscribe({
+    next: apple => console.log(`Apple was emitted ${apple}`),
+    error: err => console.log(`Error occured: ${err}`),
+    complete: () => console.log(`No more apples, go home`)
+});
+
+/* 
+        stopping an Observable Stream
+    Technique                   Completes?
+-----------------------------------------
+    Call complete                  True
+    Use completing operator        True
+    Throw an error                 False
+    Unsubscribe                    False
+
+    Completes false means we stop an Observable stream but stream is not complete, we simply no interested any more
+*/
+
+sub.unsubscribe();
+
+// *********************** Creating an Observable *************************************
+
+// using of and from function
+const appleStream_1 = of('Apple1', 'apple2');
+
+const appleStream_2 = from(['Apple1', 'apple2']);
+
+const apples = ['Apple1', 'apple2'];
+
+of(apples)         // ['Apple1', 'apple2']
+of(... apples)     // Apple1, apple2
+
+from(apples)       // Apple1, apple2
+
+
+//using fromEvent() method
+
+@viewChild('para') par: ElementRef;
+
+ngAfterViewInit() {
+    const parStream = fromEvent(this.par.nativeElement, 'click')
+                                .subscribe(console.log)
+}
+
+// using interval
+const num = interval(1000).subscribe(console.log);
