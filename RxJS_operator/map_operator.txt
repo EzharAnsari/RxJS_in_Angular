@@ -1,0 +1,24 @@
+        RxJS Operator: map  
+    --------------------------
+
+    map is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When an item is emitted
+        - Item is transformed as specified by a provided funtion
+
+of(2, 4, 6)
+    .pipe(
+        map(item => item * 2),
+        map(item => item - 3)
+    ).subscribe(console.log);
+
+Marble Diagram: map
+
+---- 2 ---- 4 ---- 6 ---- >  input Observable
+map(item => item * 2)
+---- 4 ---- 8 ---- 12 ---- >
+map(item => item - 3)
+---- 1 ---- 5 ---- 9 ---- >   Result Observable
+

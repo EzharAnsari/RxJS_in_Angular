@@ -1,0 +1,47 @@
+        RxJS Operator: take  
+    --------------------------
+
+    take is a filtering operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When an item is emitted
+        - Counts the item
+            . if <= specified number, emits item to the output stream
+            . when it equals the specified number, (unsubscribe the input stream) it completes
+    
+    Only emits the defined number of items
+        
+
+of(2, 4, 6)
+    .pipe(
+        take(2)
+    ).subscribe(console.log);
+
+// output: 2 4
+
+of(2, 4, 6)
+    .pipe(
+        tap(item => console.log(item)),
+        map(item => item * 2),
+        take(2),
+        map(item => item - 3), 
+        tap(item => console.log(item))
+    ).subscribe();
+
+// output: 2 1 4 5
+
+of(2, 4, 6)
+    .pipe(
+        map(item => item * 2),
+        take(2)
+    ).subscribe(console.log);
+
+    Marble Diagram: map
+---------------------------
+
+---- 2 ---- 4 ---- 6 |---- >  input Observable
+map(item => item * 2),
+---- 4 ---- 8 |----------- > 
+take(2)
+---- 4 ---- 8 |----------- >   Result Observable
