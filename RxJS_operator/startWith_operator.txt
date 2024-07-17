@@ -1,0 +1,28 @@
+        RxJS Operator: startWith  
+    --------------------------------
+
+    Provides as initial value
+
+    startWith('Orange')
+
+    startWith is a combination operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When a source item is emitted
+        - If it's the first item, it emits the specified initial value(s), then ....
+        - It Emits the item to the output stream
+    
+    Initial value(s) must be the same types as the source Observable
+
+of('A', 'B', 'C')
+    .pipe(
+        startWith('O)
+    ).subscribe(console.log);
+
+Marble Diagram: startWith
+
+---- A ---- B ---- C ---- >  input Observable
+startWith('O')
+----OA ---- B ---- C ---- >   Result Observable
+
