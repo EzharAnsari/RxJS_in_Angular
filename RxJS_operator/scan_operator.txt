@@ -1,0 +1,30 @@
+        RxJS Operator: scan  
+    --------------------------
+
+    Accumulates items in a stream
+
+    scan((acc, cur) => acc + curr)
+
+    Used for
+        - Totaling amounts
+        - Accumulating items into an array
+
+    scan is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When an item is emitted
+        - Item is Accumulated as specified by a provide function
+
+
+of(2, 5, 9)
+    .pipe(
+        scan((acc, curr) => acc + curr)
+    ).subscribe(console.log);
+
+Marble Diagram: scan
+
+---- 2 ---- 5 ---- 9 ---- >  input Observable
+scan((acc, curr) => acc + curr)
+---- 2 ---- 7 ---- 16 --- >   Result Observable
+
