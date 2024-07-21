@@ -1,0 +1,44 @@
+********** RxJS Creation Funtion: merge ***********
+
+    Combines multiple streams by merging their emissions
+
+    merge(a$, b$, c$)
+    
+    Static creation function, not a pipeable operator
+
+    Used for
+        - Combining sequence of similar types to blend their emitted values
+
+merge(
+    of('A', 'B', 'C', 'E'),
+    of(1, 55, 17, 80),
+    of('a', 'b', 'z', 'y')
+);
+
+    Marble Diagram:
+-------------------------
+
+-----A--B------------C----------E------------------|->  audience stream
+
+-------1----------55---------17-----------80-------|->  online stream
+
+--a---------b--------------z----------y------------|->  phone stream
+
+merge(audience$, online$, phone$)
+
+
+--a--A-1-B--b-----55--C----z-17-E-----y---80-------|->  output stream
+
+
+
+    merge is a combination function
+        - Takes in a set of streams, subscribes
+        - Creates an output stream
+    
+    When an item is emitted form any stream
+        - Item is emitted to the output stream
+
+    Completes when all input streams complete
+
+    Emitted value combines the latest emitted value from each input stream into an array
+
