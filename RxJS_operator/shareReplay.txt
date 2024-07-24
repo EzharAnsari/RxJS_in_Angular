@@ -1,0 +1,57 @@
+        RxJS Operator: shareReplay  
+    ----------------------------------
+
+    Shares the stream with other subscribers
+
+    Replays the defined number of emissions on subscription
+
+    shareReplay(1)
+
+    Used for
+        - Caching data in the application
+
+    shareReplay is a multicast operator
+    
+    Return a Subject that shares a single subscription to the underlying source
+
+    Takes in an optional buffer size, which is the number of items cached and replayed
+
+    On a subscribe, it replays a specified number of emissions
+
+    The items stays cached forever, even after there are no more subscribers
+
+
+a$ = interval(1000)
+    .pipe(
+        take(3),
+        shareReplay(1)
+    )
+
+Marble Diagram: shareReplay
+
+---- 0 ---- 1 ---- 2 ---- >  input Observable
+shareReplay(1)
+---- 0-> -- 1-> -- 2 ---  >   buffer (have size 1 so, its latest value will be 2 followed by 1 and 0)
+
+---- 0 ---- 1 ---- 2 ---  >   first subscriber (a$.subscribe(console.log))
+
+            1 ---- 2 ---  >   second subscriber (a$.subscribe(console.log))
+
+                      2 - >   third subscriber (a$.subscribe(console.log))
+
+
+    Caching Observables  
+-----------------------------
+
+Use shareReplay on any stream you wish to share and replay to all new subscribers
+
+***** Cache Invalidation *****
+
+    Evaluate
+        - Fluidity of data
+        - User's behavior
+    
+    Consider
+        - Invalidating the cache on a time interval
+        - Allowing ther user to control when data is refreshed
+        - Always getting fresh data on update operations
