@@ -1,0 +1,45 @@
+        RxJS Operator: mergeMap (flatMap)
+    ----------------------------------------
+
+    Higher-order mapping + merging
+
+    Transforms each emitted item to a new (inner) Observable as defined by a function
+
+    mergeMap(item => of(item) )
+
+    It executes inner Observables in PARALLEL
+
+    And merge their results
+
+    mergeMap is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When a source item is emitted, it's queued
+        - Item is mapped to a inner Observable as specified by a provided function
+        - Subscribes to inner Observable
+        - Inner Observable emissions are merged to the output stream
+
+    Use for
+        - To process items in PARALLEL
+        - When order doesn't matter
+        - Examples:
+            - From a set of ids, retrieve data (order doesn't matter)
+
+of('A1', 'A2')
+    .pipe(
+        mergeMap(id => 
+            this.http.get<Apple>(`${this.url}/${id}`))
+    ).subscribe(console.log);
+
+    Marble Diagram: mergeMap
+-------------------------------
+
+------ 3 --- 7 -------------->  | -> input Observable
+       |     |
+       |     ------ {s7} ---->  |
+       |                        | -> Intermediate Observables
+       ------- s{3} --------->  |
+mergeMap(...)
+
+---------------s{3}-s{7}----->  | -> output Observable
