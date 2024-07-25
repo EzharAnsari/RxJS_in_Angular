@@ -1,0 +1,51 @@
+    Higher-order Observables
+---------------------------------
+
+    - Those Observables which emits other Observables
+
+of(3, 7)
+    .pipe(
+        map(id => this.http.get<Item> (`${this.url}/${id}`))
+    )
+    .subscribe();
+
+------ 3 --- 7 -------------->  | -> Outer Observable
+       |     |
+       |     ------ {s7} ---->  |
+       |                        | -> Inner Observables
+       ------- s{3} --------->  |
+map(...)
+
+// Subscribe to inner Observables Example
+
+of(3, 7)
+    .pipe(
+        map(id => this.http.get<Item> (`${this.url}/${id}`))
+    )
+    .subscribe(o => 
+        o.subscribe()
+    );
+
+    Issues with nested subscriptions
+-----------------------------------------
+        - We can't unsubscribe to innder Observables.
+        - We can't use asyn pipe
+    
+    So we use Higher-order RxJS mapping Operator
+        - Higher-order mapping operators transform higher-order Observables.
+
+    Family of operators: xxxMap()
+
+    Map each value
+        - From a source (outer) Observable
+        - To a new (inner) Observable
+    
+    Automatically subscribe/unsubscribe from inner Observables
+
+    Emit the resulting values to the output Observable
+
+    Examples of Higher-order Mapping Operators
+        - concatMap
+        - mergeMap
+        - switchMap
+    
