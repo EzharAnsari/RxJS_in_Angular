@@ -1,0 +1,48 @@
+        RxJS Operator: concatMap  
+    --------------------------
+
+    Higher-order mapping + concatenation
+
+    Transforms each emitted item to a new (inner) Observable as defined by a function
+
+    concatMap(item => of(item) )
+
+    It waits for each inner Observable to complete before processing the next one.
+
+    Concatenates their results in SEQENCE
+
+    concatMap is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When a source item is emitted, it's queued
+        - Item is mapped to a inner Observable as specified by a provided function
+        - Subscribes to inner Observable
+        - Waits
+        - Inner Observable emissions are concatenated to the output stream
+        - When inner Observable completes, process the next item
+
+    Use for
+        - To wait for the prior Observable to complete before starting the next one
+        - To process items in SEQENCE
+        - Examples:
+            - From a set of ids, get data in SEQENCE
+            - From a set of ids, update data in SEQENCE
+
+of('A1', 'A2')
+    .pipe(
+        concatMap(id => 
+            this.http.get<Apple>(`${this.url}/${id}`))
+    ).subscribe(console.log);
+
+    Marble Diagram: concatMap
+-------------------------------
+
+------ 3 --- 7 -------------->  | -> input Observable
+       |     |
+       |     ------ {s7} ---->  |
+       |                        | -> Intermediate Observables
+       ------- s{3} --------->  |
+concatMap(...)
+
+---------------s{3}--s{7}---->  | -> output Observable
