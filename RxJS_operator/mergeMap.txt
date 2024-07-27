@@ -15,7 +15,7 @@
         - Takes in an input stream, subscribes
         - Creates an output stream
     
-    When a source item is emitted, it's queued
+    When a source item is emitted
         - Item is mapped to a inner Observable as specified by a provided function
         - Subscribes to inner Observable
         - Inner Observable emissions are merged to the output stream
