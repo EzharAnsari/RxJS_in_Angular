@@ -1,0 +1,45 @@
+        RxJS Operator: switchMap  
+    -------------------------------
+
+    Higher-order mapping + switching
+
+    Transforms each emitted item to a new (inner) Observable as defined by a function
+
+    switchMap(item => of(item) )
+
+    STOPS the prior Observable And
+    SWITCHES to the new Observable
+
+    switchMap is a transformation operator
+        - Takes in an input stream, subscribes
+        - Creates an output stream
+    
+    When a each item is emitted
+        - Item is mapped to an inner Observable as specified by a provided function
+        - Unsubscribes from prior inner Observable
+        - Subscribes to new inner Observable
+        - Inner Observable emissions are merged to the output stream
+
+    Use for
+        - To stop any prior Observable before switching to the next one
+        - Examples:
+            - Type ahead or auto completion
+            - User selection from a list
+
+of('A1', 'A2')
+    .pipe(
+        switchMap(id => 
+            this.http.get<Apple>(`${this.url}/${id}`))
+    ).subscribe(console.log);
+
+    Marble Diagram: switchMap
+---------------------------------
+
+------ 3 --- 7 -------------->  | -> input Observable
+       |     |
+       |     ------ {s7} ---->  |
+       |                        | -> Intermediate Observables
+       -----------|>  - Unsubscribes
+switchMap(...)
+
+--------------------s{7}----->  | -> output Observable
